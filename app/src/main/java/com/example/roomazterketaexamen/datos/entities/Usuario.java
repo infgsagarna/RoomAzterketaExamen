@@ -3,10 +3,16 @@ package com.example.roomazterketaexamen.datos.entities;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "usuarios", indices = {@Index(value = "email", unique = true)} )
+@Entity(tableName = "usuarios", indices = {@Index(value = "email", unique = true)},
+        foreignKeys = @ForeignKey(
+                entity = ListaTareas.class,
+                parentColumns = "lista_id", // Este es el id de la lista de ListaTareas
+                childColumns = "lista_id", // Este es el id de la lista de de esta clase
+                onDelete = ForeignKey.CASCADE))
 public class Usuario {
 
     @NonNull
@@ -23,14 +29,19 @@ public class Usuario {
     @NonNull
     private String password;
 
+    @NonNull
+    @ColumnInfo(name = "lista_id")
+    private long listaId;
+
     public Usuario() {
 
     }
 
-    public Usuario(@NonNull String nombre, @NonNull String email, @NonNull String password) {
+    public Usuario(@NonNull String nombre, @NonNull String email, @NonNull String password, long listaId) {
         this.nombre = nombre;
         this.email = email;
         this.password = password;
+        this.listaId = listaId;
     }
 
     public long getUserId() {
@@ -66,5 +77,13 @@ public class Usuario {
 
     public void setPassword(@NonNull String password) {
         this.password = password;
+    }
+
+    public long getListaId() {
+        return listaId;
+    }
+
+    public void setListaId(long listaId) {
+        this.listaId = listaId;
     }
 }

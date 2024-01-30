@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // rellenar con datos.
-        PrecargaBD.insertarDatos(bd);
+        //PrecargaBD.insertarDatos(bd);
 
 
         Button bRegistrar = findViewById(R.id.bRegistrar);
@@ -85,9 +85,18 @@ public class MainActivity extends AppCompatActivity {
             // Crear usuario
 
 
+
             //***********EL NOMBRE SERA LO INTRODUCIDO ANTES DE LA ARROBA**********///////
             String nombre = email.split("@")[0];
-            oUser = new Usuario(nombre, email, password);
+
+            // Crear lista tarea para el usuario.
+            ListaTareas listaTareas = new ListaTareas("Lista " + nombre, null);
+
+            long listaId=bd.listaTareasDao().insertList(listaTareas);
+
+
+            //Crear Usuario
+            oUser = new Usuario(nombre, email, password,listaId);
 
             //hasiera batean ez da beharrezkoa
             long userId = bd.usuarioDao().insertUser(oUser);
@@ -96,9 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            // Crear lista tarea para el usuario.
-            ListaTareas listaTareas = new ListaTareas("Lista " + nombre, null, oUser.getUserId());
-            bd.listaTareasDao().insertList(listaTareas);
+
 
             // Mostrar mensaje.
             Toast.makeText(MainActivity.this, "Registrado: " + oUser.getNombre(),
@@ -108,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
             // LLamar a listaCompraActivity.
             Intent intent = new Intent(MainActivity.this, ListaTareasActivity.class);
             intent.putExtra("userId", oUser.getUserId());
+            intent.putExtra("listaId", oUser.getListaId());
             startActivity(intent);
         } else {
             Log.d(TAG, "Registro:Failed");
@@ -136,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
             // Llamar a listaTareasActivity
             Intent intent = new Intent(MainActivity.this, ListaTareasActivity.class);
             intent.putExtra("userId", oUser.getUserId());
+            intent.putExtra("listaId", oUser.getListaId());
             startActivity(intent);
         } else {
             Toast.makeText(MainActivity.this, "Usuario y/o contraseña incorrecta",

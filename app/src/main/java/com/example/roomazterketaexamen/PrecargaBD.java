@@ -13,19 +13,23 @@ public class PrecargaBD {
         // Aquí puedes realizar inserciones de datos de prueba utilizando los DAOs
 
         // Por ejemplo, para insertar un usuario de prueba:
-        Usuario u1 = new Usuario("gontzal", "gontzal@gmail.com", "1234");
-        Usuario u2 = new Usuario("oier", "oier@gmail.com", "1234");
-        long us1=bd.usuarioDao().insertUser(u1);
-        long us2=bd.usuarioDao().insertUser(u2);
+        Usuario u1 = new Usuario("gontzal", "gontzal@gmail.com", "1234",0);
+        Usuario u2 = new Usuario("oier", "oier@gmail.com", "1234",0);
+
 
 
         // Inserta listas de compras de prueba
         //ListaCompra shoppingList1 = new ListaCompra("Zerrenda 1", new Date(), user.getUserId());
-        ListaTareas listaTareas = new ListaTareas("Lista "+u1.getNombre(), "05/02/2023", us1);
+        ListaTareas listaTareas = new ListaTareas("Lista "+u1.getNombre(), "05/02/2023");
         long lt1=bd.listaTareasDao().insertList(listaTareas);
-        ListaTareas listaTareas2 = new ListaTareas("Lista "+u2.getNombre(), "05/02/2022", us2);
+        ListaTareas listaTareas2 = new ListaTareas("Lista "+u2.getNombre(), "05/02/2022");
         long lt2=bd.listaTareasDao().insertList(listaTareas2);
 
+        //Ahora insertamos el usuario en la base de datos,una vez seteado el listaId que no teníamos antes
+        u1.setListaId(lt1);
+        u2.setListaId(lt2);
+        long us1=bd.usuarioDao().insertUser(u1);
+        long us2=bd.usuarioDao().insertUser(u2);
 
         // Inserta tareas de prueba para Lista 1
         Tarea t1 = new Tarea("05/02/2023","Ir al médico",lt1);
@@ -37,6 +41,6 @@ public class PrecargaBD {
 
         bd.tareaDao().insertTareas(t1,t2,t3,t4);
 
-        // Puedes continuar insertando más datos de prueba según tus necesidades
+
     }
 }

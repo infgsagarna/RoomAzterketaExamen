@@ -9,8 +9,8 @@ import androidx.room.PrimaryKey;
 @Entity (tableName = "tareas",
 foreignKeys = @ForeignKey(
         entity = ListaTareas.class,
-        parentColumns = "lista_id", // Este es el nombre de Empresa
-        childColumns = "lista_tarea_id", // Este es el nombre de esta clase
+        parentColumns = "lista_id",
+        childColumns = "lista_id",
         onDelete = ForeignKey.CASCADE))
 public class Tarea {
 
@@ -26,7 +26,7 @@ public class Tarea {
     private String textoTarea;
 
     @NonNull
-    @ColumnInfo(name = "lista_tarea_id")
+    @ColumnInfo(name = "lista_id")
     private long listaId;
 
     public Tarea() {

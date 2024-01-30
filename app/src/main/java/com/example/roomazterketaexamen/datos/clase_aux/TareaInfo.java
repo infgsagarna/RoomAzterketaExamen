@@ -4,36 +4,18 @@ import java.util.Date;
 
 public class TareaInfo {
 
-    private String nombreListaTareas;
-    private String fechaUltimaTarea;
+   // private String nombreListaTareas;
+    //private String fechaUltimaTarea;
 
     private String fechaTarea;
     private String textoTarea;
 
-    public TareaInfo(String nombreListaTareas, String fechaUltimaTarea, String fechaTarea, String textoTarea) {
-        this.nombreListaTareas = nombreListaTareas;
-        this.fechaUltimaTarea = fechaUltimaTarea;
+    public TareaInfo(String fechaTarea, String textoTarea) {
         this.fechaTarea = fechaTarea;
         this.textoTarea = textoTarea;
     }
 
     public TareaInfo() {
-    }
-
-    public String getNombreListaTareas() {
-        return nombreListaTareas;
-    }
-
-    public void setNombreListaTareas(String nombreListaTareas) {
-        this.nombreListaTareas = nombreListaTareas;
-    }
-
-    public String getFechaUltimaTarea() {
-        return fechaUltimaTarea;
-    }
-
-    public void setFechaUltimaTarea(String fechaUltimaTarea) {
-        this.fechaUltimaTarea = fechaUltimaTarea;
     }
 
     public String getFechaTarea() {

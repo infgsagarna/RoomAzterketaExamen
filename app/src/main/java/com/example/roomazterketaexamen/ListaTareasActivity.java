@@ -27,6 +27,7 @@ public class ListaTareasActivity extends AppCompatActivity {
     String nombreTarea;
 
     long userId;
+    long listaId;
 
 
     @Override
@@ -38,6 +39,7 @@ public class ListaTareasActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             userId = intent.getLongExtra("userId", 0L);
+            listaId = intent.getLongExtra("listaId", 0L);
             Toast.makeText(ListaTareasActivity.this, "UserID: " + userId,
                     Toast.LENGTH_SHORT).show();
         }
@@ -46,10 +48,18 @@ public class ListaTareasActivity extends AppCompatActivity {
         // Cargar base de datos.
         bd = ListaTareasDatabase.getDatabase(this);
 
+        //Bienvenido "usuario"
         String nombre = bd.usuarioDao().getUserNameById(userId);
-
         TextView tvUsuario = findViewById(R.id.textViewUsuario);
         tvUsuario.setText("Bienvenido "+nombre);
+
+        //Poner el nombre de la lista, para este usuario
+        String nombreLista = bd.listaTareasDao().getNombreListaById(listaId);
+        TextView tvNomLista = findViewById(R.id.textViewNombreLista);
+        tvNomLista.setText(nombreLista);
+
+        //Poner la fecha de última tarea, para este usuario
+        cambiarFechaUltimaTarea();
 
         leerTareas();
 
@@ -87,7 +97,8 @@ public class ListaTareasActivity extends AppCompatActivity {
         getDatos();
         // crear objeto.
         Tarea oTarea;
-        oTarea = bd.tareaDao().getTareaByName(nombreTarea);
+        //oTarea = bd.tareaDao().getTareaByName(nombreTarea);
+        oTarea = bd.tareaDao().getTareaByNameAndListaId(nombreTarea,listaId);
         if (oTarea != null) {
             // eliminar tarea.
             bd.tareaDao().deleteTarea(oTarea);
@@ -97,6 +108,7 @@ public class ListaTareasActivity extends AppCompatActivity {
             Toast.makeText(ListaTareasActivity.this, "Tarea inexistente: " + nombreTarea,
                     Toast.LENGTH_SHORT).show();
         }
+        cambiarFechaUltimaTarea();
     }
 
     private void eliminarUsuario() {
@@ -110,16 +122,17 @@ public class ListaTareasActivity extends AppCompatActivity {
     private void guardarTarea() {
         // Leer datos introducidos.
         getDatos();
-        // crear objetotarea
+
+        // crear objeto tarea
         Tarea oTarea;
-        long listaId=bd.listaTareasDao().getListaIdByUserId(userId);
+        //long listaId=bd.listaTareasDao().getListaIdByUserId(userId);
         long tareaId;
 
         //obtener String con fecha actual
         String fecha=fechaActual();
 
-        oTarea = bd.tareaDao().getTareaByName(nombreTarea);
-        if (oTarea == null){ // si es un nueva la tarea, meterla en la BS.
+        oTarea = bd.tareaDao().getTareaByNameAndListaId(nombreTarea,listaId);
+        if (oTarea == null){ // si es una nueva tarea para esta lista de tareas, meterla en la BS.
             oTarea = new Tarea(fecha,nombreTarea,listaId);
             tareaId = bd.tareaDao().insertTarea(oTarea);
             bd.listaTareasDao().updateListaTareas(listaId,fecha);
@@ -130,6 +143,7 @@ public class ListaTareasActivity extends AppCompatActivity {
         }
 
         leerTareas();
+        cambiarFechaUltimaTarea();
     }
 
     private String fechaActual() {
@@ -157,9 +171,9 @@ public class ListaTareasActivity extends AppCompatActivity {
 
         String listaTareas = "";
         for (int i = 0; i < TareasList.size();i++) {
-            String tareaInfo = "- "+TareasList.get(i).getNombreListaTareas() + "\n          Última tarea: " + TareasList.get(i).getFechaUltimaTarea()
-                    + "\n          Nombre Tarea: " + TareasList.get(i).getTextoTarea()
-                    + "\n          Fecha Tarea: " + TareasList.get(i).getFechaTarea();
+            //String tareaInfo = "- "+TareasList.get(i).getNombreListaTareas() + "\n          Última tarea: " + TareasList.get(i).getFechaUltimaTarea()
+            String tareaInfo = "- Nombre Tarea: " + TareasList.get(i).getTextoTarea()
+                    + "\nFecha Tarea: " + TareasList.get(i).getFechaTarea();
             listaTareas += tareaInfo + "\n\n";
             //listaTareas += tareaInfo;
         }
@@ -179,5 +193,12 @@ public class ListaTareasActivity extends AppCompatActivity {
         // Obtener el texto del EditText
         nombreTarea = etTarea.getText().toString();
 
+    }
+
+    public void cambiarFechaUltimaTarea(){
+        //Poner la fecha de última tarea, para este usuario
+        String fechaUltima = bd.listaTareasDao().getUltimaFechaById(listaId);
+        TextView tvFechaUlima = findViewById(R.id.textViewFechaUltima);
+        tvFechaUlima.setText("Última fecha: "+fechaUltima);
     }
 }

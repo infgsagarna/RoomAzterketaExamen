@@ -17,8 +17,11 @@ public interface TareaDao {
     @Insert
     public void insertTareas(Tarea... tarea);
 
-    @Query("Select * from tareas where texto_tarea=:nombreTarea")
-    public Tarea getTareaByName(String nombreTarea);
+    /*@Query("Select * from tareas where texto_tarea=:nombreTarea")
+    public Tarea getTareaByName(String nombreTarea);*/
+
+    @Query("Select * from tareas where texto_tarea=:nombreTarea AND lista_id=:listaId")
+    public Tarea getTareaByNameAndListaId(String nombreTarea,long listaId);
 
     @Delete
     void deleteTarea(Tarea tarea);

@@ -8,12 +8,8 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity (tableName = "lista_tareas",
-foreignKeys = @ForeignKey(
-        entity = Usuario.class,
-        parentColumns = "usuario_id", // Este es el nombre del usuario
-        childColumns = "usuario_id", // Este es el nombre de usuario de esta clase
-        onDelete = ForeignKey.CASCADE))
+@Entity (tableName = "lista_tareas")
+
 public class ListaTareas {
 
     @NonNull
@@ -29,18 +25,13 @@ public class ListaTareas {
     @ColumnInfo(name = "fecha_ultima_tarea")
     private String fechaUltimaTarea;
 
-    @NonNull
-    @ColumnInfo(name = "usuario_id")
-    private long usuarioId;
-
     public ListaTareas() {
 
     }
 
-    public ListaTareas(@NonNull String nombre, String fechaUltimaTarea, long usuarioId) {
+    public ListaTareas(@NonNull String nombre, String fechaUltimaTarea) {
         this.nombre = nombre;
         this.fechaUltimaTarea = fechaUltimaTarea;
-        this.usuarioId = usuarioId;
     }
 
     public long getListaId() {
@@ -69,11 +60,4 @@ public class ListaTareas {
         this.nombre = nombre;
     }
 
-    public long getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuarioId(long usuarioId) {
-        this.usuarioId = usuarioId;
-    }
 }
