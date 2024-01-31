@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.roomazterketaexamen.datos.ListaTareasDatabase;
 import com.example.roomazterketaexamen.datos.clase_aux.TareaInfo;
+import com.example.roomazterketaexamen.datos.entities.ListaTareas;
 import com.example.roomazterketaexamen.datos.entities.Tarea;
 import com.example.roomazterketaexamen.datos.entities.Usuario;
 
@@ -111,10 +112,16 @@ public class ListaTareasActivity extends AppCompatActivity {
         cambiarFechaUltimaTarea();
     }
 
+    // ORAIN EZABATU BEHARREKOA LISTA DA ETA EZ USUARIO
     private void eliminarUsuario() {
-        Usuario oUser = bd.usuarioDao().getUserById(userId);
+        /*Usuario oUser = bd.usuarioDao().getUserById(userId);
         bd.usuarioDao().deleteUser(oUser);
         Toast.makeText(ListaTareasActivity.this, "Usuario eliminado: " + oUser.getNombre(),
+                Toast.LENGTH_SHORT).show();
+        finish();*/
+        ListaTareas oListaTareas = bd.listaTareasDao().getListaTareasById(listaId);
+        bd.listaTareasDao().deleteListaTareas(oListaTareas);
+        Toast.makeText(ListaTareasActivity.this, "Lista eliminada: " + oListaTareas.getNombre(),
                 Toast.LENGTH_SHORT).show();
         finish();
     }

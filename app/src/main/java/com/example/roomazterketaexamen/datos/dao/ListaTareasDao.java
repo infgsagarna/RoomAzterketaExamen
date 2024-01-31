@@ -2,11 +2,13 @@ package com.example.roomazterketaexamen.datos.dao;
 
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.example.roomazterketaexamen.datos.clase_aux.TareaInfo;
 import com.example.roomazterketaexamen.datos.entities.ListaTareas;
+import com.example.roomazterketaexamen.datos.entities.Usuario;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +18,11 @@ public interface ListaTareasDao {
 
     @Insert
     public long insertList(ListaTareas listaTareas);
+
+
+    //***********BEHARREZKOA LISTATAREAS EZABATZEKO
+    @Query("SELECT * FROM lista_tareas WHERE lista_id = :listaId")
+    public ListaTareas getListaTareasById(long listaId);
 
 
    /*@Query("SELECT lista_tareas.nombre_lista_tareas as nombreListaTareas, lista_tareas.fecha_ultima_tarea as fechaUltimaTarea,"+
@@ -37,5 +44,7 @@ public interface ListaTareasDao {
 
     @Query("UPDATE lista_tareas SET fecha_ultima_tarea= :fecha WHERE lista_id = :listId")
     public void updateListaTareas(long listId, String fecha);
+    @Delete
+    void deleteListaTareas(ListaTareas lTareas);
 
 }
